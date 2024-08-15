@@ -1,0 +1,171 @@
+ven_01 <- read.csv("RESULTADOS_2024_CSV_V1.csv", header = TRUE)
+View(ven_01)
+ven_02 <- read.csv("RESULTADOS_2024_CSV_V2.csv", header = TRUE)
+View(ven_02)
+View(ven_01)
+View(ven_02)
+colnames(ven_01)
+colnames(ven_02)
+x <- c("ggmap", "rgdal", "rgeos", "maptools", "dplyr", "tidyr", "tmap")
+# install.packages(x) # warning: uncommenting this may take a number of minutes
+lapply(x, library, character.only = TRUE)
+install.packages(x) # warning: uncommenting this may take a number of minutes
+lapply(x, library, character.only = TRUE)
+install.packages("rgdal")
+install.packages("sf")
+ven_01 <- read.csv("RESULTADOS_2024_CSV_V1.csv", header = TRUE)
+ven_02_sf <- st_read("ven_shape/ven_admbndl_admALL_ine_itos_20210223.shp", package = "sf")
+library(sf)
+ven_02_sf <- st_read("ven_shape/ven_admbndl_admALL_ine_itos_20210223.shp", package = "sf")
+ven_02_sf <- st_read("ven_shape/ven_admbnda_adm3_ine_20210223.shp", package = "sf")
+install.packages("terra")
+library(terra)
+ven_02_sf <- ("ven_shape/ven_admbnda_adm3_ine_20210223.shp", package = "terra")
+ven_02_sf <- ("ven_shape/ven_admbnda_adm3_ine_20210223.shp")
+ven_02_sf <- vect("ven_shape/ven_admbnda_adm3_ine_20210223.shp")
+head(ven_02_sf@ptr, n = 2)
+plot(ven_02_sf)
+ven_02_sf_02 <- vect("ven_shape/ven_admbnda_adm2_ine_20210223.shp")
+plot(ven_02_sf_02)
+ven_02_sf_01 <- vect("ven_shape/ven_admbnda_adm1_ine_20210223.shp")
+plot(ven_02_sf_01)
+source("~/.active-rstudio-document")
+ven_02_sf_estado@name
+library(sf)
+class(ven_02_sf_estado)
+ven_02_sf_estado <- vect("ven_shape/ven_admbnda_adm1_ine_20210223.shp", package = "sf")
+ven_02_sf_estado
+class(ven_02_sf_estado)
+source("~/R_Projects/EleccionVenezuela/test.R")
+class(ven_02_sf_estado)
+View(ven_02_sf_estado)
+ven_02_sf_estado@ptr$df
+ven_02_sf_estado$ADM0_ES
+ven_02_sf_estado$ADM1_PCODE
+ven_02_sf_estado$ADM0_EN
+ven_02_sf_estado$ADM1_PCODE
+ven_02_sf_estado$ADM1_ES
+View(ven_02)
+unique(ven_02$EDO)
+binder <- read.csv("binder.csv", header = TRUE)
+View(binder)
+library(tidyr)
+library(tidyverse)
+ven_02_sf_estado <- left_join(binder, by = c("ADM1_ES" = "name_in_sp"))
+ven_02_sf_estado <- left_join(., binder, by = c("ADM1_ES" = "name_in_sp"))
+ven_02_sf_estado <- left_join(ven_02_sf_estado, binder, by = c("ADM1_ES" = "name_in_sp"))
+ven_02_sf_estado <- sf::st_read("ven_shape/ven_admbnda_adm1_ine_20210223.shp")
+ven_02_sf_estado <- left_join(ven_02_sf_estado, binder, by = c("ADM1_ES" = "name_in_sp"))
+ven_02 <- read.csv("data_master/data_basic/RESULTADOS_2024_CSV_V2.csv", header = TRUE)
+ven_02_sf_estado <- sf::st_read("data_master/ven_shape/ven_admbnda_adm1_ine_20210223.shp")
+ven_02_sf_municipio <- sf::st_read("data_master/ven_shape/ven_admbnda_adm2_ine_20210223.shp")
+ven_02_sf_parroquia <- sf::st_read("data_master/ven_shape/ven_admbnda_adm3_ine_20210223.shp")
+binder <- read.csv("data_master/data_basic/binder.csv", header = TRUE)
+ven_02_sf_estado <- left_join(ven_02_sf_estado, binder, by = c("ADM1_ES" = "name_in_sp"))
+# Data by State ####
+state_only <-ven_02 %>%
+group_by(EDO) %>%
+summarise_at(vars(VOTOS_VALIDOS:BERA sum, na.rm = TRUE))
+# Data by State ####
+state_only <-ven_02 %>%
+group_by(EDO) %>%
+summarise_at(vars(VOTOS_VALIDOS:BERA, sum, na.rm = TRUE))
+# Data by State ####
+state_only <-ven_02 %>%
+group_by(EDO) %>%
+summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+View(state_only)
+View(binder)
+library(sf)
+library(tidyverse)
+# Select Municipality
+# 1. State
+this_state <- "EDO. ANZOATEGUI"
+each_state <- ven_02 %>%
+filter(EDO == this_state) %>%
+group_by(MUN) %>%
+summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+each_state
+# 2. Municipality
+this_state <- ven_02 %>%
+filter(EDO == "EDO. ZULIA" & MUN == "MP. MARA")
+# Data by Municipality ####
+# 1. All Municipalities in One State
+this_state <- "EDO. ANZOATEGUI"
+each_state <- ven_02 %>%
+filter(EDO == this_state) %>%
+group_by(MUN) %>%
+summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+# 2. Municipality
+this_state <- "EDO. ZULIA"
+this_municipality <- "MP. MARA"
+each_municipality <- ven_02 %>%
+filter(EDO == this_state & MUN == this_municipality)
+View(each_municipality)
+each_municipality <- ven_02 %>%
+filter(EDO == this_state & MUN == this_municipality) %>%
+summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+View(each_municipality)
+# 4. Parish
+this_state <- "EDO. FALCON"
+this_municipality <- "MP. ZAMORA"
+this_parish <- "PQ. LA SOLEDAD"
+each_municipality <- ven_02 %>%
+filter(EDO == this_state & MUN == this_municipality & this_parish) %>%
+summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+each_municipality <- ven_02 %>%
+filter(EDO == this_state & MUN == this_municipality & PAR == this_parish) %>%
+summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+# 3. Municipality
+this_state <- "EDO. ZULIA"
+this_municipality <- "MP. MARA"
+each_municipality <- ven_02 %>%
+filter(EDO == this_state & MUN == this_municipality) %>%
+summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+# 4. Parish
+this_state <- "EDO. FALCON"
+this_municipality <- "MP. ZAMORA"
+this_parish <- "PQ. LA SOLEDAD"
+each_parish <- ven_02 %>%
+filter(EDO == this_state & MUN == this_municipality & PAR == this_parish) %>%
+summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+View(each_parish)
+View(each_state)
+colnames(ven_02)
+clave_candidato <- read.csv("data_master/data_basic/clave_candidato.csv", header = TRUE)
+View(clave_candidato)
+clave_candidato <- read.csv("data_master/data_basic/clave_candidato.csv", header = TRUE)
+View(clave_candidato)
+# Percentage Function
+df <- each_parish
+df <- vector(df[2:ncol(df)])
+df <- as.vector(df[2:ncol(df)])
+View(df)
+df <- unlist(as.vector(df[2:ncol(df)]))
+# Percentage Function
+df <- each_parish
+df <- unlist(as.vector(df[2:ncol(df)]))
+df
+# Percentage Function
+df <- each_parish
+df <- as.vector(df[2:ncol(df)])
+View(each_state)
+# Percentage Function
+df <- each_parish
+votos_validos <- df$VOTOS_VALIDOS
+df <- as.vector(df[2:ncol(df)])
+df <- lappy(df, function(x) x/votos_validos)
+df <- lapply(df, function(x) x/votos_validos)
+View(df)
+# Percentage Function
+df <- each_parish
+votos_validos <- df$VOTOS_VALIDOS
+df <- as.vector(df[2:ncol(df)])
+df <- lapply(df, function(x) round(x/votos_validos*100,2))
+View(df)
+# Percentage Function
+df <- each_parish
+votos_validos <- df$VOTOS_VALIDOS
+df <- as.vector(df[2:ncol(df)])
+df <- as.data.frame(lapply(df, function(x) round(x/votos_validos*100,2)))
+View(df)
