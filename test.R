@@ -13,7 +13,7 @@ library(tidyverse)
 
 # Upload Files ####
 
-ven_02 <- read.csv("data_master/data_basic/RESULTADOS_2024_CSV_V2.csv", header = TRUE)
+ven_02 <- read.csv("data_master/data_basic/RESULTADOS_2024_CSV_V2.csv", header = TRUE, encoding = "UTF-8")
 ven_02_sf_estado <- sf::st_read("data_master/ven_shape/ven_admbnda_adm1_ine_20210223.shp")
 ven_02_sf_municipio <- sf::st_read("data_master/ven_shape/ven_admbnda_adm2_ine_20210223.shp")
 ven_02_sf_parroquia <- sf::st_read("data_master/ven_shape/ven_admbnda_adm3_ine_20210223.shp")
