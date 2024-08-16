@@ -24,6 +24,13 @@ ui <- dashboardPage(
     sidebarMenu(
       menuItem("Estado", tabName = "estado", icon = icon("dashboard")),
       menuItem("Municipio", tabName = "municipio", icon = icon("city"))
+    ),
+    fluidRow(
+      style='padding-left:20px; padding-right:0px; padding-top:10px; padding-bottom:5px',
+      div(
+        h4("Con datos de", align = "left"),
+        a("Resultados con Venezuela", href="https://www.resultadosconvzla.com/")
+      )
     )
   ),
   dashboardBody(
