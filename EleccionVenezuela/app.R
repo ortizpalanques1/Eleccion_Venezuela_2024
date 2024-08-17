@@ -81,6 +81,10 @@ ui <- dashboardPage(
           column(
             6,
             plotOutput("the_plot2")
+          ),
+          column(
+            6,
+            tableOutput("the_table2")
           )
         )
       ),
@@ -113,6 +117,10 @@ ui <- dashboardPage(
           column(
             6,
             plotOutput("the_plot3")
+          ),
+          column(
+            6,
+            tableOutput("the_table3")
           )
         )
       )
@@ -162,14 +170,21 @@ server <- function(input, output, session){
  })
  
  
+ each_municipality <-  reactive({
+   selected_municipality2() %>%
+     summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+ })
+ 
  output$the_plot2 <- renderPlot({
    this_title2 <- paste0("Porcentaje de votos")
-   each_municipality <-  selected_municipality2() %>%
-     summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
-
-   x <- percentage_function(each_municipality)
+   x <- percentage_function(each_municipality())
    g <- the_graphic(x, this_title2)
    g
+ })
+ 
+ output$the_table2 <- renderTable({
+   x <- percentage_function(each_municipality())
+   x
  })
  
  # parroquia
@@ -197,14 +212,22 @@ server <- function(input, output, session){
    filter(selected_municipality3(), PAR == input$parroquia3)
  })
  
+ each_parish <-  reactive({
+   selected_parroquia3() %>%
+     summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+ })
+   
  output$the_plot3 <- renderPlot({
    this_title3 <- paste0("Porcentaje de votos")
-   each_parish <-  selected_parroquia3() %>%
-     summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
-   
-   x <- percentage_function(each_parish)
+   x <- percentage_function(each_parish())
    g <- the_graphic(x, this_title3)
    g
  })
+ 
+ output$the_table3 <- renderTable({
+   x <- percentage_function(each_parish())
+   x
+ })
+ 
 }
 shinyApp(ui = ui, server = server)

@@ -6,13 +6,14 @@ percentage_function <- function(df){
   votos_validos <- df$VOTOS_VALIDOS
   df <- as.vector(df[2:ncol(df)])
   df_votos <- as.data.frame(df)
-  df_votos <- pivot_longer(df[,2:ncol(df)],   everything(), cols_vary = "slowest", names_to = "Candidato", values_to = "Votos")
+  df_votos <- pivot_longer(df_votos[,2:ncol(df_votos)],   everything(), cols_vary = "slowest", names_to = "Candidato", values_to = "Votos")
   df <- as.data.frame(lapply(df, function(x) round(x/votos_validos*100,2)))
-  df <- pivot_longer(df[,2:ncol(df)],   everything(), cols_vary = "slowest", names_to = "Candidato", values_to = "Porcentaje") %>% 
+  df_total <- pivot_longer(df[,2:ncol(df)],   everything(), cols_vary = "slowest", names_to = "Candidato", values_to = "Porcentaje") %>% 
     left_join(., clave_candidato, by = c("Candidato" = "Clave")) %>% 
-    select(Candidato.y, Porcentaje) %>% 
+    left_join(., df_votos, by = "Candidato") %>% 
+    select(Candidato.y, Votos, Porcentaje) %>% 
     rename(Candidato = Candidato.y)
-  return(df)
+  return(df_total)
 }
 
 # Bar Graphic Function ####
