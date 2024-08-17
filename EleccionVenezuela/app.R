@@ -39,14 +39,16 @@ ui <- dashboardPage(
         tabName = "estado",
         fluidRow(
           column(
-            1
+            width = 1
           ),
           column(
-            2,
+            width = 2,
             fluidRow(
-              selectInput('estados', 'Estado', names_unique(ven_02$EDO)))
+              selectInput('estados', 'Estado', names_unique(ven_02$EDO))
             )
           ),
+          valueBoxOutput("votosValidos")
+        ),
         fluidRow(
           column(
             6,
@@ -75,7 +77,8 @@ ui <- dashboardPage(
             fluidRow(
               selectInput("municipio", "Municipio", choices = NULL)
             )
-          )
+          ),
+          valueBoxOutput("votosValidos2")
         ),
         fluidRow(
           column(
@@ -111,7 +114,8 @@ ui <- dashboardPage(
             fluidRow(
               selectInput("parroquia3", "Parroquia", choices = NULL)
             )
-          )
+          ),
+          valueBoxOutput("votosValidos3")
         ),
         fluidRow(
           column(
@@ -140,6 +144,16 @@ server <- function(input, output, session){
    ven_02 %>% 
      filter(EDO == selected_state()) %>% 
      summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+ })
+ 
+ output$votosValidos <- renderValueBox({
+   los_votos_validos <- each_state()[1,1]
+   valueBox(
+     los_votos_validos,
+     "Votos Válidos",
+     icon = icon("vote-yea"),
+     color = "olive",
+   )
  })
  
  output$the_plot <- renderPlot({
@@ -173,6 +187,16 @@ server <- function(input, output, session){
  each_municipality <-  reactive({
    selected_municipality2() %>%
      summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+ })
+ 
+ output$votosValidos2 <- renderValueBox({
+   los_votos_validos <- each_municipality()[1,1]
+   valueBox(
+     los_votos_validos,
+     "Votos Válidos",
+     icon = icon("vote-yea"),
+     color = "olive",
+   )
  })
  
  output$the_plot2 <- renderPlot({
@@ -215,6 +239,16 @@ server <- function(input, output, session){
  each_parish <-  reactive({
    selected_parroquia3() %>%
      summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
+ })
+ 
+ output$votosValidos3 <- renderValueBox({
+   los_votos_validos <- each_parish()[1,1]
+   valueBox(
+     los_votos_validos,
+     "Votos Válidos",
+     icon = icon("vote-yea"),
+     color = "olive",
+   )
  })
    
  output$the_plot3 <- renderPlot({

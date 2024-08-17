@@ -25,10 +25,12 @@ the_graphic <- function(df, entidad){
     labs(title = entidad)+
     scale_fill_manual(values = c("Edmundo González Urrutia" = "blue", "Nicolás Maduro Moros" = "red"))+
     coord_flip()+
+    guides(fill=guide_legend(nrow=2,byrow=TRUE))+
     theme(
       axis.title = element_blank(),
       axis.text= element_blank(),
       axis.ticks = element_blank(),
+      legend.byrow = FALSE,
       legend.position = "bottom",
       legend.title = element_blank(),
       legend.text = element_text(size = 12, color = "black", face = "bold"),
