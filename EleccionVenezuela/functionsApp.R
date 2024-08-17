@@ -5,6 +5,8 @@ percentage_function <- function(df){
   clave_candidato <- read.csv("clave_candidato.csv", header = TRUE)
   votos_validos <- df$VOTOS_VALIDOS
   df <- as.vector(df[2:ncol(df)])
+  df_votos <- as.data.frame(df)
+  df_votos <- pivot_longer(df[,2:ncol(df)],   everything(), cols_vary = "slowest", names_to = "Candidato", values_to = "Votos")
   df <- as.data.frame(lapply(df, function(x) round(x/votos_validos*100,2)))
   df <- pivot_longer(df[,2:ncol(df)],   everything(), cols_vary = "slowest", names_to = "Candidato", values_to = "Porcentaje") %>% 
     left_join(., clave_candidato, by = c("Candidato" = "Clave")) %>% 
@@ -18,7 +20,7 @@ the_graphic <- function(df, entidad){
   region_graph <- ggplot(df[df$Candidato == "Edmundo González Urrutia" | df$Candidato == "Nicolás Maduro Moros",], 
                          aes(x = reorder(Candidato, Porcentaje), y = Porcentaje, fill = Candidato, label = Porcentaje))+
     geom_col(width = 0.75)+
-    geom_text(aes(y=5), fontface="bold", color="white", size = 12) +
+    geom_text(aes(y=10), fontface="bold", color="white", size = 12) +
     labs(title = entidad)+
     scale_fill_manual(values = c("Edmundo González Urrutia" = "blue", "Nicolás Maduro Moros" = "red"))+
     coord_flip()+

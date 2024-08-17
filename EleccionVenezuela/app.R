@@ -51,6 +51,10 @@ ui <- dashboardPage(
           column(
             6,
             plotOutput("the_plot")
+          ),
+          column(
+            6,
+            tableOutput("the_table")
           )
         )
       ),
@@ -124,15 +128,22 @@ server <- function(input, output, session){
    input$estados
  })
  
- output$the_plot <- renderPlot({
-   this_title <- paste0("Porcentaje de votos en ", selected_state())
-   each_state <- ven_02 %>% 
+ each_state <- reactive({
+   ven_02 %>% 
      filter(EDO == selected_state()) %>% 
      summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
-   
-   x <- percentage_function(each_state)
+ })
+ 
+ output$the_plot <- renderPlot({
+   this_title <- paste0("Porcentaje de votos en ", selected_state())
+   x <- percentage_function(each_state())
    g <- the_graphic(x, this_title)
    g
+ })
+ 
+ output$the_table <- renderTable({
+   x <- percentage_function(each_state())
+   x
  })
  
  # municipio
@@ -188,10 +199,10 @@ server <- function(input, output, session){
  
  output$the_plot3 <- renderPlot({
    this_title3 <- paste0("Porcentaje de votos")
-   each_parrish <-  selected_parroquia3() %>%
+   each_parish <-  selected_parroquia3() %>%
      summarise_at(vars(VOTOS_VALIDOS:BERA), sum, na.rm = TRUE)
    
-   x <- percentage_function(each_parrish)
+   x <- percentage_function(each_parish)
    g <- the_graphic(x, this_title3)
    g
  })
