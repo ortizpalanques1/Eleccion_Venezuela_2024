@@ -2,7 +2,7 @@
 library(shiny)
 library(tidyverse)
 #library(shinyjs)
-#library(DT)
+library(DT)
 library(shinydashboard)
 library(leaflet)
 library(mongolite)
@@ -54,7 +54,7 @@ ui <- dashboardPage(
           ),
           column(
             6,
-            tableOutput("the_table")
+            DTOutput("the_table")
           )
         )
       ),
@@ -84,7 +84,7 @@ ui <- dashboardPage(
           ),
           column(
             6,
-            tableOutput("the_table2")
+            DTOutput("the_table2")
           )
         )
       ),
@@ -120,7 +120,7 @@ ui <- dashboardPage(
           ),
           column(
             6,
-            tableOutput("the_table3")
+            DTOutput("the_table3")
           )
         )
       )
@@ -143,13 +143,13 @@ server <- function(input, output, session){
  })
  
  output$the_plot <- renderPlot({
-   this_title <- paste0("Porcentaje de votos en ", selected_state())
+   this_title <- paste0("Porcentaje de votos")
    x <- percentage_function(each_state())
    g <- the_graphic(x, this_title)
    g
  })
  
- output$the_table <- renderTable({
+ output$the_table <- renderDT({
    x <- percentage_function(each_state())
    x
  })
@@ -182,7 +182,7 @@ server <- function(input, output, session){
    g
  })
  
- output$the_table2 <- renderTable({
+ output$the_table2 <- renderDT({
    x <- percentage_function(each_municipality())
    x
  })
@@ -224,7 +224,7 @@ server <- function(input, output, session){
    g
  })
  
- output$the_table3 <- renderTable({
+ output$the_table3 <- renderDT({
    x <- percentage_function(each_parish())
    x
  })

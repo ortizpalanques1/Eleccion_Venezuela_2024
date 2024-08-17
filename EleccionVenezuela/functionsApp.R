@@ -21,7 +21,7 @@ the_graphic <- function(df, entidad){
   region_graph <- ggplot(df[df$Candidato == "Edmundo González Urrutia" | df$Candidato == "Nicolás Maduro Moros",], 
                          aes(x = reorder(Candidato, Porcentaje), y = Porcentaje, fill = Candidato, label = Porcentaje))+
     geom_col(width = 0.75)+
-    geom_text(aes(y=10), fontface="bold", color="white", size = 12) +
+    geom_text(aes(y=10), fontface="bold", color="white", size = 8) +
     labs(title = entidad)+
     scale_fill_manual(values = c("Edmundo González Urrutia" = "blue", "Nicolás Maduro Moros" = "red"))+
     coord_flip()+
@@ -35,7 +35,7 @@ the_graphic <- function(df, entidad){
       plot.background = element_rect(fill="white"),
       panel.background = element_rect(fill="white"),
       panel.grid = element_line(color="white"),
-      title = element_text(size = 32)
+      title = element_text(size = 28)
     )
   return(region_graph)
 }
