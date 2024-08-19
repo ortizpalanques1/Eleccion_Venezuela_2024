@@ -13,7 +13,7 @@ library(tidyverse)
 
 # Upload Files ####
 
-ven_02 <- read.csv("data_master/data_basic/RESULTADOS_2024_CSV_V2.csv", header = TRUE, encoding = "UTF-8")
+ven_02 <- read.csv("data_master/data_basic/RESULTADOS_2024_CSV_V2.csv", header = TRUE, encoding = "latin1")
 ven_02_sf_estado <- sf::st_read("data_master/ven_shape/ven_admbnda_adm1_ine_20210223.shp")
 ven_02_sf_municipio <- sf::st_read("data_master/ven_shape/ven_admbnda_adm2_ine_20210223.shp")
 ven_02_sf_parroquia <- sf::st_read("data_master/ven_shape/ven_admbnda_adm3_ine_20210223.shp")
@@ -95,5 +95,8 @@ the_graphic <- function(df){
   return(region_graph)
 }
 
+# View Municipalities ####
+unique(ven_02$MUN)
 
+ven_02$MUN[171] <- sub("\\xd1", "Ñ", ven_02$MUN[171])
 

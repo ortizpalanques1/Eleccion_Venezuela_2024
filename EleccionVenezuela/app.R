@@ -11,8 +11,9 @@ library(mongolite)
 source("functionsApp.R")
 
 # Load Data Frames ####
-ven_02 <- read.csv("RESULTADOS_2024_CSV_V2.csv", header = TRUE, encoding = "UTF-8") %>% 
-  mutate_if(is.character, utf8::utf8_encode)
+ven_02 <- read.csv("RESULTADOS_2024_CSV_V2.csv", header = TRUE, encoding = "latin1")
+#%>% 
+ # mutate_if(is.character, utf8::utf8_encode)
 binder <- read.csv("binder.csv", header = TRUE)
 #clave_candidato <- read.csv("clave_candidato.csv", header = TRUE)
 

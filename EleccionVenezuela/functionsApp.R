@@ -33,7 +33,7 @@ the_graphic <- function(df, entidad){
       legend.byrow = FALSE,
       legend.position = "bottom",
       legend.title = element_blank(),
-      legend.text = element_text(size = 12, color = "black", face = "bold"),
+      legend.text = element_text(size = 10, color = "black", face = "bold"),
       plot.background = element_rect(fill="white"),
       panel.background = element_rect(fill="white"),
       panel.grid = element_line(color="white"),
