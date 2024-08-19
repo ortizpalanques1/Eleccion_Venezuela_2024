@@ -24,7 +24,8 @@ ui <- dashboardPage(
     sidebarMenu(
       menuItem("Estado", tabName = "estado", icon = icon("dashboard")),
       menuItem("Municipio", tabName = "municipio", icon = icon("city")),
-      menuItem("Parroquia", tabName = "parroquia", icon = icon("tree-city"))
+      menuItem("Parroquia", tabName = "parroquia", icon = icon("tree-city")),
+      menuItem("Acta", tabName = "acta", icon = icon("receipt"))
     ),
     fluidRow(
       style='padding-left:20px; padding-right:0px; padding-top:10px; padding-bottom:5px',
@@ -128,6 +129,47 @@ ui <- dashboardPage(
             DTOutput("the_table3")
           )
         )
+      ),
+      tabItem(
+        tabName = "acta",
+        fluidRow(
+          column(
+            1
+          ),
+          column(
+            2,
+            fluidRow(
+              selectInput("estados5", "Estado", names_unique(ven_02$EDO))
+            )
+          ),
+          column(
+            2,
+            fluidRow(
+              selectInput("municipio5", "Municipio", choices = NULL)
+            )
+          ),
+          column(
+            2,
+            fluidRow(
+              selectInput("parroquia5", "Parroquia", choices = NULL)
+            )
+          ),
+          column(
+            2,
+            fluidRow(
+              selectInput("centro5", "Centro", choices = NULL)
+            )
+          ),
+          column(
+            2,
+            fluidRow(
+              selectInput("mesa5", "Mesa", choices = NULL)
+            )
+          )
+        ),
+        h2("Acta de Votación"),
+        DTOutput("tablaXX"),
+        uiOutput("img")
       )
     )
   )
@@ -262,6 +304,58 @@ server <- function(input, output, session){
  output$the_table3 <- renderDT({
    x <- percentage_function(each_parish())
    x
+ })
+ 
+ # Acta ####
+ 
+ selected_state5 <- reactive({
+   filter(ven_02, EDO == input$estados5)
+ })
+ 
+ observeEvent(selected_state5(), {
+   choices <- unique(selected_state5()$MUN)
+   updateSelectInput(inputId = "municipio5", choices = choices) 
+ })
+ 
+ selected_municipality5 <- reactive({
+   req(input$municipio5)
+   filter(selected_state5(), MUN == input$municipio5)
+ })
+ 
+ observeEvent(selected_municipality5(), {
+   choices <- unique(selected_municipality5()$PAR)
+   updateSelectInput(inputId = "parroquia5", choices = choices) 
+ })
+ 
+ selected_parroquia5 <- reactive({
+   req(input$parroquia5)
+   filter(selected_municipality5(), PAR == input$parroquia5)
+ })
+ 
+ observeEvent(selected_parroquia5(), {
+   choices <- unique(selected_parroquia5()$CENTRO)
+   updateSelectInput(inputId = "centro5", choices = choices) 
+ })
+ 
+ selected_centro5 <- reactive({
+   req(input$centro5)
+   filter(selected_parroquia5(), CENTRO == input$centro5)
+ })
+ 
+ observeEvent(selected_centro5(), {
+   choices <- unique(selected_centro5()$MESA)
+   updateSelectInput(inputId = "mesa5", choices = choices) 
+ })
+ 
+ selected_mesa5 <- reactive({
+   req(input$mesa5)
+   filter(selected_centro5(), MESA == input$mesa5)
+ })
+ 
+ 
+ output$img <- renderUI({
+   acta <- as.character(selected_mesa5()$URL)
+   tags$img(src = acta)
  })
  
 }
